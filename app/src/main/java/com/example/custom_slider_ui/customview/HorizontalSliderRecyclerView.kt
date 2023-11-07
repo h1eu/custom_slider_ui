@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.custom_slider_ui.R
@@ -29,8 +31,9 @@ class HorizontalSliderRecyclerView @JvmOverloads constructor(
             override fun onChanged() {
                 post {
                     val sidePadding = (width / 2) - (getChildAt(0).width / 2)
+                    val haftSideItem = getChildAt(0).width / 2
                     setPadding(sidePadding, 0, sidePadding, 0)
-                    scrollToPosition(0)
+                    scrollToPosition(1)
                     addOnScrollListener(object : OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             super.onScrolled(recyclerView, dx, dy)

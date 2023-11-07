@@ -7,22 +7,29 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.custom_slider_ui.databinding.ItemBinding
 import com.example.custom_slider_ui.model.Item
+import kotlin.math.roundToInt
 
 class ItemAdapter(
     val itemClick: (Int, Item) -> Unit,
-) : ListAdapter<Item,ItemAdapter.ItemViewHolder>(ItemDiffUtilCallback()) {
+) : ListAdapter<Item,ItemViewHolder>(ItemDiffUtilCallback()) {
+    private var hasInitParentDimensions = false
+    private var maxImgHeight: Int = 0
+    private var maxImgWidth: Int = 0
+    private var maxIngAspectRatio = 1f
 
-    class ItemViewHolder(private val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Item) {
-            binding.listItemText.text = "${item.title}"
-            binding.listItemIcon.setImageResource(item.icon)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        if (!hasInitParentDimensions){
+            maxImgWidth = parent.width
+            maxImgHeight = parent.height
+            maxIngAspectRatio = maxImgWidth.toFloat() / maxImgHeight.toFloat()
+            hasInitParentDimensions = true
         }
+
+        return ItemViewHolder(
+            ItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
-        ItemViewHolder(
-           ItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        )
 
     override fun getItemCount() = currentList.size
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -30,6 +37,10 @@ class ItemAdapter(
         holder.itemView.setOnClickListener {
             itemClick(position,currentList[position])
         }
+        holder.itemView.layoutParams = RecyclerView.LayoutParams(
+            (maxImgWidth * maxIngAspectRatio).roundToInt(),
+            RecyclerView.LayoutParams.MATCH_PARENT
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")

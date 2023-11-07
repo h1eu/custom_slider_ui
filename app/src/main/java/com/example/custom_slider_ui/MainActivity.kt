@@ -3,6 +3,7 @@ package com.example.custom_slider_ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.custom_slider_ui.adapter.ItemAdapter
 import com.example.custom_slider_ui.databinding.ActivityMainBinding
 import com.example.custom_slider_ui.model.Item
@@ -12,9 +13,14 @@ class MainActivity : AppCompatActivity() {
     private val itemAdapter by lazy {
         ItemAdapter { position: Int, item: Item ->
             Toast.makeText(this@MainActivity, "Pos ${position}", Toast.LENGTH_LONG).show()
-            binding.customRecyclerView.smoothScrollToPosition(position)
+//            binding.customRecyclerView.smoothScrollToPosition(position)
         } }
     private val possibleItems = listOf(
+        Item("Airplanes", R.drawable.bg_16dp_theme_yellow),
+        Item("Cars", R.drawable.bg_16dp_theme_gray),
+        Item("Food", R.drawable.bg_16dp_theme_yellow),
+        Item("Gas", R.drawable.bg_16dp_theme_gray),
+        Item("Home", R.drawable.bg_16dp_theme_yellow),
         Item("Airplanes", R.drawable.bg_16dp_theme_yellow),
         Item("Cars", R.drawable.bg_16dp_theme_gray),
         Item("Food", R.drawable.bg_16dp_theme_yellow),
@@ -25,9 +31,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.customRecyclerView.initialize(itemAdapter)
-        binding.customRecyclerView.setViewsToChangeColor(listOf(R.id.list_item_background,R.id.list_item_text))
-        itemAdapter.submitList(possibleItems)
+//        binding.customRecyclerView.initialize(itemAdapter)
+//        binding.customRecyclerView.setViewsToChangeColor(listOf(R.id.list_item_background,R.id.list_item_text))
+//        itemAdapter.submitList(possibleItems)
+
+        binding.rv.apply {
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            adapter = itemAdapter
+            itemAdapter.submitList(possibleItems)
+        }
 
     }
 }
