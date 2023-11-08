@@ -29,8 +29,6 @@ class ItemAdapter(
             ItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         )
     }
-
-
     override fun getItemCount() = currentList.size
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(currentList[position])
